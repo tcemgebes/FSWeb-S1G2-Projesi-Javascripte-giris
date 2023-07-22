@@ -20,6 +20,20 @@ Aşağıdakileri yap:
    İPUCU: fonksiyon oluşturmaya gerek yok
 */
 
+
+// nasil fonksiyon olusturmadan bunu kullanabilirim hic emin degilim; bir kerelik bir islem olarak yaptim herhalde...
+var surucuYasi = 18;
+
+if (surucuYasi > 18) {
+  console.log(true);
+}
+
+else {
+  console.log(false);
+}
+
+
+
 /*
 Görev 1b - Değerler (puanlamaya dahil değildir)
 
@@ -32,6 +46,16 @@ Aşağıdakileri yap:
    İPUCU: fonksiyon oluşturmaya gerek yok
 */
 
+let val1 = 17;
+let val2 = 13;
+
+
+if (val1 >= val2) {
+  val1 = 18;
+}
+
+console.log(val1);
+
 /*
 Görev 1c - String bir değeri Number'a dönüştürün (puanlamaya dahil değildir)
 
@@ -42,6 +66,10 @@ Aşağıdakileri yap:
 
    İPUCU: Number metoduna bakabilirsin
 */
+let year = "1999";
+
+year = Number(year);
+console.log(year, typeof(year));
 
 /*
 Görev 1d - Çarpma
@@ -52,9 +80,10 @@ Aşağıdakileri yaparak carpma isimli fonksiyonu tamamla:
    3. console.log(carpma(7,4)) ile yazdığın fonsiyonu test edin. Console'da sonucu 28 olarak görmelisin.
 */
 
-function carpma(/*buraya kodunu yazabilirsin*/) {
-  /*buraya kodunu yazabilirsin*/
+function carpma(a,b) {
+  return a*b
 }
+console.log(carpma(7,4));
 
 /* Görev 2 : Köpeğin Yaşı */
 
@@ -65,8 +94,8 @@ Aşağıdakileri yap:
  3. Hesaplanan köpeğin yaşını dönün.
  */
 
-function kopeginYasi(/*buraya kodunu yazabilirsin*/) {
-  /*buraya kodunu yazabilirsin*/
+function kopeginYasi(yas) {
+  return (Number(yas)*7)
 }
 
 /* Görev 3 */
@@ -84,16 +113,25 @@ OYUNUN KURALLARI: Makas Kağıdı yener| Kağıt Taşı yener | Taş Makas'ı ye
 */
 
 function oyun(oyuncu, bilgisayar) {
-  /*buraya kodunu yazabilirsin*/
-}
+  if (oyuncu == bilgisayar){
+    return "Beraberlik";
+  }
+
+  if ((oyuncu == "Taş" && bilgisayar == "Makas") || (oyuncu == "Makas" && bilgisayar == "Kağıt") || (oyuncu == "Kağıt" && bilgisayar == "Taş")) {
+    return "Kazandın!"
+  }
+
+  else {
+    return "Kaybettin!"
+  }
+  
+};
+
 
 // Şimdi Taş, Kağıt, Makas oyununu bilgisayara karşı oynayalım!
 /*
 Öncelikle aşağıdakileri yap:
 1. Bilgisayarın seçimini rastgele oluşturacağım bir fonksiyon tanımla. Örn: 
-   function bilgisayarinSecimi() {
-   
-   }
 2. Fonsiyonun içinde bilgisayarın seçimi için bir değişken tanımla
 3. Math.random'ı kullanarak bilgisayarın seçimini oluşturun (Math.random 0-1 arasında bir değer verecek)
 4. Bu rastgele değeri "Taş", "Kağıt" veya "Makas"a dönüştüren bir koşul oluşturun
@@ -103,8 +141,37 @@ function oyun(oyuncu, bilgisayar) {
 Örn: console.log(oyun("Makas",bilgisayarinSecimi()))
 */
 
-/* Görev 4 : Metrik Dönüştürücü */
 
+function bilgisayarinSecimi() {
+
+  let secimMetodu = Math.round(((3*Math.random()) + 0.5));
+  
+  // 0.333 den az ise Tas, 0.333 ve 0.666 arasi ise Makas... ile ugrasmamak adina Math.random'i 3 ile carptim ki tam sayilara yuvarlanabilsin 
+  // Bu ayni zamanda arrayden index halinde secim yapmamiza yarayacak. 
+  // Olasiliklari esitlemek icin 0.5 ile topladim. Cunku eger sadece 3 ile carpmis olsaydim, ve sonra yuvarlasaydim:
+  // 0'a yuvarlanmasi 0.49'a kadar cikan degerler icin mumkun, fakat 1'e yuvarlanmasi icin 0.5 -- 1.49 arasi herhangi bir deger cikmasi yeterli.
+  // Yani 0 cikmasi, 1 cikmasina gore nerdeyse 2 kat daha az olasi olurdu.
+  // 0.5 ile toplamak ise su ise yaradi: 0.5 -- 1.49 degerleri 1'e yuvarlaniyor,ve Array'imizde Tas'in indexini ona gore ayarliyoruz
+  // 1.5 -- 2.49 degerleri 2'ye yuvarlaniyor, ve Array'deki indexini ona gore ayarliyoruz. Tas ve Makas cikma olasiligi esit bir sekilde.
+  // 2.5 -- 3.5 degerleri ise 3 veya 4'e yuvarlaniyor. Bu yuzden Arrayde hem 3. hem 4. elementi Kagit olarak tekrar ettim. 
+  // Evet, Kagit cikma olasiligi %1 gibi bir degerle daha fazla. Ama 3 yerine 2.9999 gibi bir degerle carpmanin belki de bilgisayari daha cok yorabilecegini dusundum.
+  // Bu yuvarlama isleminin, yani secimMetodu degiskeninin 0 cikarmasi mumkun olamayacagindan 0. indexi undefined biraktim.
+
+  let secimArrayi = [ undefined ,"Taş","Makas","Kağıt","Kağıt"];
+
+  return secimArrayi[secimMetodu];
+
+};
+
+
+// Birkac tane test yapalim
+for (let i = 0; i < 10; i++){
+  console.log(oyun(bilgisayarinSecimi(),bilgisayarinSecimi()))
+}
+
+
+
+/* Görev 4 : Metrik Dönüştürücü */
 //Görev 4a - Kilometreden Mil
 /*
 Aşağdaki milDonusturucu fonksiyonunu aşağıdakileri kullanarak tamamla:
@@ -113,9 +180,10 @@ Aşağdaki milDonusturucu fonksiyonunu aşağıdakileri kullanarak tamamla:
 3. Mil değerini geri dönün
 */
 
-function milDonusturucu(/*buraya kodunu yazabilirsin*/) {
-  /*buraya kodunu yazabilirsin*/
-}
+function milDonusturucu(km) {
+  return (km * 0.621371)
+};
+
 
 //Görev 4b - Santimetreden Feet
 /*
@@ -127,9 +195,11 @@ Aşağıdakileri feetDonusturucu fonsiyonunu kullanarak yap:
 Google'da arama ipucu: "feet cm dönüştürme"
 */
 
-function feetDonusturucu(/*buraya kodunu yazabilirsin*/) {
-  /*buraya kodunu yazabilirsin*/
-}
+function feetDonusturucu(cm) {
+  return (cm / 30.48)
+};
+
+
 
 /* Görev 5 : 5 küçük maymun yatakta zıplamış şarkısını çocuklar için hazırladığımı varsayalım. https://www.youtube.com/watch?v=e4EJ34xnlxk */
 
@@ -144,9 +214,13 @@ Aşağıdakileri cocukSarkisi fonksiyonunda yap:
 4. Bu döngüde, her seferinde cocukSarkisi fonsiyonu çalışsın ve console.log'a dönen metni yazdırsın.
 */
 
-function cocukSarkisi(/*buraya kodunu yazabilirsin*/) {
-  /*buraya kodunu yazabilirsin*/
+function cocukSarkisi(maymun) {
+  return maymun + " küçük maymun yatakta zıplamış, biri düşüp başını çarpmış, Anne doktoru aramış, Doktor çok kızmış: Bir daha yatakta zıplamak yok!"
 }
+for (let i = 5; i > 0; i--) {
+  cocukSarkisi(i);
+}
+
 
 /* Görev 6 : Not Hesaplayıcı */
 
@@ -163,9 +237,30 @@ Aşağdakileri notHesapla fonksiyonunda yap.
  dönün
 */
 
-function notHesapla(/*buraya kodunu yazabilirsin*/) {
-  /*buraya kodunu yazabilirsin*/
-}
+
+// Bilgisayarin Secimi fonksiyonuna benzer bir yol cizdim 
+
+function notHesapla(not) {
+  
+  let kacaldim = Math.round((not/10) + 0.5);
+  
+  
+  let bakalim = 
+  [undefined,
+  "F aldın",
+  "F aldın",
+  "F aldın",
+  "F aldın",
+  "F aldın",
+  "F aldın",
+  "D aldın",
+  "C aldın",
+  "B aldın",
+  "A aldın",
+  "A aldın"];
+
+  return bakalim[kacaldim];
+};
 
 /* Bonus Çalışma: Sesli harf sayacı - Kaç tane sesli harf var? */
 
